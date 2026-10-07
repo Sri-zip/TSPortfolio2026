@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@theme {
+  --color-paper: #f3f0e8;
+  --color-ink: #1a1c1c;
+  --color-teal: #0e5a57;
+  --color-mute: #6b6f6c;
+  --color-line: #d8d3c6;
+  --color-sakura: #e8b4bc;
+  --font-display: "Inter Tight", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(232, 180, 188, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(14, 90, 87, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+h1,h2,h3,h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
+
+/* Section Flow (no harsh page breaks) */
+.page { display: flex; flex-direction: column; width: 100%; position: relative; }
+.page-in { flex: 1; display: flex; flex-direction: column; gap: 2.25rem; width: 100%; max-width: 1240px; margin: 0 auto; padding: clamp(2.5rem, 7vw, 5.5rem) clamp(1.25rem, 5vw, 4rem); }
+
+/* Glassmorphism primitives */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(216, 211, 198, 0.7);
+  box-shadow: 0 4px 24px -2px rgba(26, 28, 28, 0.04);
+}
+.glass-panel-dark {
+  background: rgba(26, 28, 28, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+.glass-pill {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(216, 211, 198, 0.8);
+}
+
+.ph { display: grid; place-items: center; min-height: 7rem; height: 100%; border: 1px dashed var(--color-teal); color: var(--color-teal); font: 11px var(--font-mono); text-align: center; padding: .75rem; border-radius: 0.75rem; background: color-mix(in srgb, var(--color-teal) 4%, transparent); }
+.display { font-size: clamp(3.5rem, 14vw, 11rem); line-height: .86; font-weight: 600; letter-spacing: -0.045em; }
+.meta { font: 11px var(--font-mono); color: var(--color-mute); }
+.dark-page { background: var(--color-ink); color: var(--color-paper); }
+:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 2px; }
+
+@keyframes fall {
+  0% { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+  50% { transform: translate3d(var(--dx), 55vh, 0) rotate(180deg); }
+  100% { transform: translate3d(calc(var(--dx) * -0.5), 110vh, 0) rotate(360deg); }
+}
+.sakura { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+.petal { position: absolute; top: 0; will-change: transform; animation: fall linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .petal { animation: none; transform: translateY(var(--y)); }
+  .petal.extra { display: none; }
+}
+
+/* Modal: interactive case-study detail with glass backdrop */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(26, 28, 28, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fade-in .15s ease-out;
+}
+.modal-panel {
+  background: rgba(243, 240, 232, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  width: min(940px, 100%);
+  max-height: min(88vh, 920px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(216, 211, 198, 0.9);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 50px -12px rgba(26, 28, 28, 0.25);
+  overflow: hidden;
+  animation: rise-in .18s ease-out;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
